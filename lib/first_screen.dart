@@ -3,6 +3,8 @@ import 'package:employee_list/helper/database_helper.dart';
 import 'package:employee_list/second_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:io' as Io;
+import 'dart:convert';
 
 import 'models/emp.dart';
 
@@ -69,13 +71,15 @@ class _firstScreen extends State<firstScreen>{
     return ListView.builder(
         itemCount: empList.length,
         itemBuilder: (BuildContext context, int position){
+          final _byteImage = Base64Decoder().convert(this.empList[position].path);
           return Card(
             color: Colors.white,
             elevation: 2.0,
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.green,
-                child: Icon(Icons.account_circle_outlined),
+                child:  new Image.memory(_byteImage),
+                //Icon(Icons.account_circle_outlined),
               ),
               title: Text(this.empList[position].name ,),
               subtitle: Text(this.empList[position].age,),
@@ -92,7 +96,6 @@ class _firstScreen extends State<firstScreen>{
       //_showMessageInScaffold('Query done.');
       setState(() {});
     }
-
 
 }
 

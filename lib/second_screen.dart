@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'models/emp.dart';
+import 'dart:io' as Io;
+import 'dart:convert';
 
 
 
@@ -29,7 +31,7 @@ class _second extends State<secondScreeen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   File _image;
-  String _imagePath;
+  String _imageData;
   final picker = ImagePicker();
 
   @override
@@ -138,7 +140,7 @@ class _second extends State<secondScreeen> {
                         onPressed: () {
                           setState(() {
                             debugPrint('save Pressed');
-                            _save(nameController.text, ageController.text);
+                            _save(nameController.text, ageController.text,_imageData);
                           });
 
                         }
@@ -188,11 +190,18 @@ class _second extends State<secondScreeen> {
         source: ImageSource.camera, imageQuality: 50
     );
 
+    final bytes = Io.File(image.path).readAsBytesSync();
+
+    String img64 = base64Encode(bytes);
+
     setState(() {
       _image = image;
+      _imageData = img64;
+     //encImg();
     });
-    _imagePath = image.path;
-    print("Image picker file path - $_imagePath");
+
+
+   // print("Image picker file path - $_imagePath");
 
   }
 
@@ -200,20 +209,40 @@ class _second extends State<secondScreeen> {
     File image = await  ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50
     );
+    // final bytes = Io.File('$image').readAsBytesSync();
+    //
+    // _imageData = await base64Encode(bytes);
+    // print(_imageData.substring(0, 100));
+
+    final bytes = Io.File(image.path).readAsBytesSync();
+
+    String img64 = base64Encode(bytes);
+  //  print(img64);
 
     setState(() {
       _image = image;
+      _imageData = img64;
     });
-   _imagePath = image.path;
-    print("Image picker file path - $_imagePath");
+   // encImg();
+
+   // print("Image picker file path - $_imagePath");
   }
 
+  // encImg() {
+  //   final bytes = Io.File('$_image').readAsBytesSync();
+  //
+  //   _imageData = base64Encode(bytes);
+  //   print(_imageData.substring(0, 100));
+  // }
 
-  void _save(name, age) async {
+
+  void _save(name, age ,path) async {
     // row to insert
     Map<String, dynamic> row = {
       DatabaseHelper.colName: name,
-      DatabaseHelper.colAge: age
+      DatabaseHelper.colAge: age,
+      DatabaseHelper.colPath: path,
+
     };
     Emp emp = Emp.fromMap(row);
     final id = await helper.insertEmp(emp);
@@ -224,7 +253,6 @@ class _second extends State<secondScreeen> {
   // void moveToLastscreen(){
   //   Navigator.pop(context, true);
   // }
-
 
 
   void _showAlertDialog(String title, String message) {
@@ -238,4 +266,5 @@ class _second extends State<secondScreeen> {
         builder: (_) => alertDialog
     );
   }
+
 }
