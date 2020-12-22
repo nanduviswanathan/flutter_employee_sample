@@ -61,7 +61,7 @@ class _second extends State<secondScreeen> {
                           },
                           child: CircleAvatar(
                             radius: 55,
-                            backgroundColor: Color(0xffFDCF09),
+                            backgroundColor: Color(0xFFFFFFFF),
                             child: _image != null
                                 ? ClipRRect(
                               borderRadius: BorderRadius.circular(50),
@@ -187,7 +187,7 @@ class _second extends State<secondScreeen> {
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50
+        source: ImageSource.camera, imageQuality: 50, maxWidth: 100,maxHeight: 150,
     );
 
     final bytes = Io.File(image.path).readAsBytesSync();
@@ -207,7 +207,7 @@ class _second extends State<secondScreeen> {
 
   _imgFromGallery() async {
     File image = await  ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50
+        source: ImageSource.gallery, imageQuality: 50,maxWidth: 100,maxHeight: 150,
     );
     // final bytes = Io.File('$image').readAsBytesSync();
     //

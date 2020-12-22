@@ -77,7 +77,7 @@ class _firstScreen extends State<firstScreen>{
             elevation: 2.0,
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.white,
                 child:  new Image.memory(_byteImage),
                 //Icon(Icons.account_circle_outlined),
               ),
